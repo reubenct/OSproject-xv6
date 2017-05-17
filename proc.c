@@ -310,7 +310,7 @@ int x123;
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
-      //cprintf("----%d----\n",p->pid);
+      //cprintf("proc %s %d\n",p->name,p->pid);
       proc = p;
       switchuvm(p);
       p->state = RUNNING;

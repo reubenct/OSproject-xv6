@@ -9,7 +9,7 @@ argv[4]=maxp_runtime
 arg[5]=maxnum_processes
 */
 int seed=2;
-int random1(int min, int max);
+
 int main ( int argc, char *argv[] ){
 	int i;
 
@@ -23,7 +23,7 @@ int main ( int argc, char *argv[] ){
 	//int runtime[maxnum_processes];
 	//char *list[] = { "sleep_sec", "1", 0 };
 	
-	sleep((int)(1000*random1(minp_time,maxp_time)/15));	
+	sleep((int)(1000*random(maxp_time-minp_time)/15));	
 	for(i=0;i<maxnum_processes;i++){		//reference: init.c
 				
 		int pid=fork();
@@ -32,7 +32,7 @@ int main ( int argc, char *argv[] ){
     	  exit();
      	}
 		 if(pid == 0){
-			sleep((int)(1000*random1(minp_runtime,maxp_runtime)/15)); //sleep for a randomly chosen runtime
+			sleep((int)(1000*random(maxp_runtime-minp_runtime)/15)); //sleep for a randomly chosen runtime
 			//exec("sleep_sec", list);
 			
 			//printf(1, "init: exec sleep_sec failed\n");
@@ -43,7 +43,7 @@ int main ( int argc, char *argv[] ){
 			//while((wpid=wait())>0 && wpid!=pid)//waiting for the wrong child
 				//printf(1, "zombie!\n");
 			//parent gonna sleep until the next proc is to be generated
-			sleep((int)(1000*random1(minp_time,maxp_time)/15));	
+			sleep((int)(1000*random(maxp_time-minp_time)/15));	
 			wait();	
 		}
 	}
@@ -55,15 +55,3 @@ int main ( int argc, char *argv[] ){
 
 }
 
-int random1(int min, int max){
-	int x=seed,r;	
-	x ^= x << 13;
-	x ^= x >> 17;
-	x ^= x << 5;
-	seed=x;
-	r=x%(max-min);
-	if(r<0)
-		r=-r;
-	r+=min;//got a random number between min and max
-	return r;
-}

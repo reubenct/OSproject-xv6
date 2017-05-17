@@ -14,12 +14,13 @@
 00000000 ulib.c
 00000000 printf.c
 00000610 printint
-00000a10 digits.1107
+00000a10 digits.1109
 00000000 umalloc.c
 00000da0 freep
 00000da4 base
 00000320 strcpy
 000006b0 printf
+00000602 random
 00000530 memmove
 00000110 matchhere
 000005aa mknod

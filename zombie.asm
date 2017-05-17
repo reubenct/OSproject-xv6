@@ -653,10 +653,12 @@ SYSCALL(uptime)
  30a:	b8 0e 00 00 00       	mov    $0xe,%eax
  30f:	cd 40                	int    $0x40
  311:	c3                   	ret    
- 312:	66 90                	xchg   %ax,%ax
- 314:	66 90                	xchg   %ax,%ax
- 316:	66 90                	xchg   %ax,%ax
- 318:	66 90                	xchg   %ax,%ax
+
+00000312 <random>:
+SYSCALL(random)
+ 312:	b8 16 00 00 00       	mov    $0x16,%eax
+ 317:	cd 40                	int    $0x40
+ 319:	c3                   	ret    
  31a:	66 90                	xchg   %ax,%ax
  31c:	66 90                	xchg   %ax,%ax
  31e:	66 90                	xchg   %ax,%ax

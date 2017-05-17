@@ -6,7 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-
+int seed=10;
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -268,17 +268,35 @@ wait(void)
   }
 }
 
-//PAGEBREAK: 42
-// Per-CPU process scheduler.
-// Each CPU calls scheduler() after setting itself up.
-// Scheduler never returns.  It loops, doing:
-//  - choose a process to run
-//  - swtch to start running that process
-//  - eventually that process transfers control
-//      via swtch back to the scheduler.
+int random(int n)//random number generator
+{
+ //int a,c,x=0;
+ //a=8121;
+ //c=28411;
+ //m=ticks;
+ //seed=((a*seed+c)%134456);
+ //x=seed%n;
+ //release(&tickslock);
+int x=seed;
+x ^=x<<13;
+x ^=x>>17;
+x ^=x<<5;
+seed=x;
+x=x%n;
+if (x>=0)
+ return x+1;
+else
+ return (-x-1);
+}
+
+
+
+
+
 void
 scheduler(void)
 {
+int x123;
   struct proc *p;
 
   for(;;){
@@ -286,14 +304,16 @@ scheduler(void)
     sti();
 
     // Loop over process table looking for process to run.
-    acquire(&ptable.lock);
+    acquire(&ptable.lock); 
+	x123=random(NPROC);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
+      if(p->state != RUNNABLE || p->pid !=x123)
         continue;
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
+      //cprintf("----%d----\n",p->pid);
       proc = p;
       switchuvm(p);
       p->state = RUNNING;

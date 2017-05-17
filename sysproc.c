@@ -37,6 +37,46 @@ sys_kill(void)
 }
 
 int
+sys_random(void)//random number generator
+{
+ int n,x;
+ if(argint(0, &n) < 0)
+    return -1;
+ acquire(&tickslock);
+ x=random(n);
+release(&tickslock);
+ return x;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int
 sys_getpid(void)
 {
   return proc->pid;

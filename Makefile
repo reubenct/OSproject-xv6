@@ -175,6 +175,7 @@ UPROGS=\
 	_sleeper\
 	_stressfs\
 	_usertests\
+	_userrand\
 	_wc\
 	_zombie\
 
@@ -249,6 +250,7 @@ EXTRA=\
 	hello.c\
 	sleeper.c\
 	printf.c umalloc.c\
+	userrand.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 

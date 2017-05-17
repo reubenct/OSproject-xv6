@@ -921,10 +921,12 @@ SYSCALL(uptime)
  45a:	b8 0e 00 00 00       	mov    $0xe,%eax
  45f:	cd 40                	int    $0x40
  461:	c3                   	ret    
- 462:	66 90                	xchg   %ax,%ax
- 464:	66 90                	xchg   %ax,%ax
- 466:	66 90                	xchg   %ax,%ax
- 468:	66 90                	xchg   %ax,%ax
+
+00000462 <random>:
+SYSCALL(random)
+ 462:	b8 16 00 00 00       	mov    $0x16,%eax
+ 467:	cd 40                	int    $0x40
+ 469:	c3                   	ret    
  46a:	66 90                	xchg   %ax,%ax
  46c:	66 90                	xchg   %ax,%ax
  46e:	66 90                	xchg   %ax,%ax

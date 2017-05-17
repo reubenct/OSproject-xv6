@@ -178,6 +178,7 @@ UPROGS=\
 	_userrand\
 	_wc\
 	_zombie\
+	_test_sch\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -249,6 +250,7 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	hello.c\
 	sleeper.c\
+	test_sch.c\
 	printf.c umalloc.c\
 	userrand.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\

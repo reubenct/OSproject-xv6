@@ -161,6 +161,7 @@ mkfs: mkfs.c fs.h
 
 UPROGS=\
 	_cat\
+	_cps\
 	_echo\
 	_forktest\
 	_grep\
@@ -171,6 +172,7 @@ UPROGS=\
 	_ls\
 	_mkdir\
 	_rm\
+	_setjl\
 	_sh\
 	_sleeper\
 	_stressfs\
@@ -251,6 +253,8 @@ EXTRA=\
 	hello.c\
 	sleeper.c\
 	test_sch.c\
+	cps.c\
+	setjl.c\
 	printf.c umalloc.c\
 	userrand.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\

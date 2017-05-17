@@ -117,6 +117,10 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int             random(int);
+void		cprocstate(void);
+int		signalinfo(int,int);
+int		setseed(int);
+
 // swtch.S
 void            swtch(struct context**, struct context*);
 

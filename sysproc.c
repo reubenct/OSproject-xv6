@@ -49,33 +49,6 @@ release(&tickslock);
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int
 sys_getpid(void)
 {
@@ -128,4 +101,34 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+// syscall for printing current ptable contents
+// calls cprocstate() in proc.c
+int
+sys_cprocstate(void)
+{
+  acquire(&tickslock);
+  cprocstate();
+  release(&tickslock);
+  return 0;
+}
+
+//syscall for assigning value to jlength of a process
+int
+sys_signalinfo(void)
+{
+  int pid,l;
+
+  if(argint(0, &pid) < 0 || argint(1, &l) < 0)
+    return -1;
+  return signalinfo(pid,l);
+}
+//syscall for assigning initial value to seed
+int
+sys_setseed(void)
+{
+  int l;
+  if(argint(0, &l) < 0)
+    return -1;
+  return setseed(l);
 }

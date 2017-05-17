@@ -21,3 +21,6 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_random 22
+#define SYS_setseed 23
+#define SYS_cprocstate 24
+#define SYS_signalinfo 25

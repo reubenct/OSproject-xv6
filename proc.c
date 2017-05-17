@@ -6,7 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
-int seed=10;
+uint seed=10;
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -277,16 +277,13 @@ int random(int n)//random number generator
  //seed=((a*seed+c)%134456);
  //x=seed%n;
  //release(&tickslock);
-int x=seed;
+uint x=seed;
 x ^=x<<13;
 x ^=x>>17;
 x ^=x<<5;
 seed=x;
 x=x%n;
-if (x>=0)
  return x+1;
-else
- return (-x-1);
 }
 
 
@@ -502,4 +499,50 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+// Prints current states of processes in ptable
+void
+cprocstate(void)
+{
+ struct proc *p;
+ sti();         // enables interrupt
+
+ acquire(&ptable.lock);
+ cprintf("Name \t PID \t State \t Job Length\n");
+ for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) // loop for each process
+ {
+     if(p->state == RUNNABLE)
+      cprintf("%s \t %d \t RUNNABLE \t %d\n",p->name,p->pid,p->jlength);
+     else if(p->state == RUNNING)
+      cprintf("%s \t %d \t RUNNING \t %d\n",p->name,p->pid,p->jlength);
+     else if(p->state == SLEEPING)
+      cprintf("%s \t %d \t SLEEPING \t %d\n",p->name,p->pid,p->jlength);
+  }
+  release(&ptable.lock);    
+}
+
+//syscall to change jlength of a process
+int
+signalinfo(int pd, int l)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pd){
+      p->jlength = l;
+       release(&ptable.lock);
+      return 0;
+    }
+  }
+  release(&ptable.lock);
+  return -1;
+}
+//syscall to set seed value
+int
+setseed(int n)
+{
+ seed=n;
+ return 0;
 }

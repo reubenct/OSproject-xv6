@@ -24,6 +24,9 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int random(int);
+int cprocstate(void);
+int signalinfo(int,int);
+int setseed(int);
 
 // ulib.c
 int stat(char*, struct stat*);

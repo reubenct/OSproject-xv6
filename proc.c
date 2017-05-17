@@ -289,9 +289,9 @@ x=x%n;
 
 
 
-
+// random scheduler
 void
-scheduler(void)
+scheduler_random(void)     
 {
 int x123;
   struct proc *p;
@@ -325,6 +325,65 @@ int x123;
 
   }
 }
+
+
+// Shortest Job First scheduler (change this selection of scheduler in main.c line 60)
+void
+scheduler_sjf(void)
+{
+int x123,jl,in,sj[64];
+  struct proc *p;
+
+  for(;;){
+    // Enable interrupts on this processor.
+    sti();
+    acquire(&ptable.lock);
+     
+    // Determine least value of job length among runnable processes
+    // the list of such processes with same least jlength are 'in' in number and stored in the array sj[]
+    jl=100;
+    in=0; 
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    {
+      if(p->state != RUNNABLE)
+        continue;
+        
+      if(p->jlength < jl)
+      { jl=p->jlength; in=0; sj[in++]=p->pid; }
+      
+      else if(p->jlength == jl)
+       sj[in++]=p->pid;
+     }
+     
+     if(in>0)
+      x123=sj[random(in)-1];  // randomly choose a process from the list sj
+     else
+      x123=0;     
+
+    // Loop over process table looking for process to run. 
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE || p->pid !=x123)
+        continue;
+
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+      //cprintf("----%d----\n",p->pid);
+      proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+      swtch(&cpu->scheduler, p->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      proc = 0;
+    }
+    release(&ptable.lock);
+
+  }
+}
+
 
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores

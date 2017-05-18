@@ -181,6 +181,7 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_test_sch\
+	_tstsjf\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -255,6 +256,7 @@ EXTRA=\
 	test_sch.c\
 	cps.c\
 	setjl.c\
+	tstsjf.c\
 	printf.c umalloc.c\
 	userrand.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\

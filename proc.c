@@ -49,6 +49,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  //p->jlength = 2; //assigning default jlength. this is set for initcode, init and for the shell
 
   release(&ptable.lock);
 
@@ -358,17 +359,18 @@ int x123,jl,in,sj[64];
      if(in>0)
       x123=sj[random(in)-1];  // randomly choose a process from the list sj
      else
-      x123=0;     
-
+      x123=sj[0];     
+	
     // Loop over process table looking for process to run. 
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE || p->pid !=x123)
+      if((p->state != RUNNABLE) || p->pid !=x123)
         continue;
-
+	  cprocstate();
+	  cprintf("x123=%d time is %d\n",x123, ticks);
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
-      //cprintf("----%d----\n",p->pid);
+      cprintf("%s pid=%d joblength=%d\n\n",p->name,p->pid, p->jlength);
       proc = p;
       switchuvm(p);
       p->state = RUNNING;
@@ -567,7 +569,7 @@ cprocstate(void)
  struct proc *p;
  sti();         // enables interrupt
 
- acquire(&ptable.lock);
+ //acquire(&ptable.lock);
  cprintf("Name \t PID \t State \t Job Length\n");
  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) // loop for each process
  {
@@ -578,7 +580,7 @@ cprocstate(void)
      else if(p->state == SLEEPING)
       cprintf("%s \t %d \t SLEEPING \t %d\n",p->name,p->pid,p->jlength);
   }
-  release(&ptable.lock);    
+  //release(&ptable.lock);    
 }
 
 //syscall to change jlength of a process
